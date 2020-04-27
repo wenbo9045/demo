@@ -27,7 +27,7 @@ typedef struct {
 	  unsigned short parking_save_state;//pkmap保存状态
 } DrivingDataType;
 2.对于每一个运动轨迹点for(auto p: driveDatas)
-2.1 读取入口GPS文件
+2.1 读取入口GPS文件，判断是否越过当前入口（GPS_origin，GPS_entrance）
 typedef struct
 {
 	double GPS_Longitude;
