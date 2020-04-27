@@ -27,7 +27,7 @@ typedef struct {
 	  unsigned short parking_save_state;//pkmap保存状态
 } DrivingDataType;
 2.对于每一个运动轨迹点for(auto p: driveDatas)
-2.1 读取入口GPS文件，判断是否越过当前入口（GPS_origin，GPS_entrance）
+2.1 读取入口GPS文件，判断是否越过当前入口（仅初始化执行一次）
 Gps_origin_out = origin；Gps_mark_out = mean(Gps_entrance_mark)
 typedef struct
 {
@@ -48,9 +48,11 @@ public:
 	unsigned int entrance_count;
 	list<GPS_DataType> Gps_storage;
 } ;
-2.2读取地图数据
+2.2读取地图数据（仅初始化执行一次）
 vector<Joints_type> vJoints;
 vector<Way_points_type> vWay_points;
 vector<Slots_type> vSlots;
 vector<Slots_type> vSlots_RT;
 vector<Landmarks_type> vLandmarks;
+2.3根据drivedata和GPS_origin，GPS_entrance，根据地理坐标系下的GPS位置以及scu的位置将其转化为对应的东北天坐标系下ENU的位置
+仅当GPS_origin，GPS_entrance_mark之间的距离在small或者medium_range时，才开始计算变化矩阵
