@@ -28,6 +28,7 @@ typedef struct {
 } DrivingDataType;
 2.对于每一个运动轨迹点for(auto p: driveDatas)
 2.1 读取入口GPS文件，判断是否越过当前入口（GPS_origin，GPS_entrance）
+Gps_origin_out = origin；Gps_mark_out = mean(Gps_entrance_mark)
 typedef struct
 {
 	double GPS_Longitude;
@@ -47,4 +48,9 @@ public:
 	unsigned int entrance_count;
 	list<GPS_DataType> Gps_storage;
 } ;
-
+2.2读取地图数据
+vector<Joints_type> vJoints;
+vector<Way_points_type> vWay_points;
+vector<Slots_type> vSlots;
+vector<Slots_type> vSlots_RT;
+vector<Landmarks_type> vLandmarks;
