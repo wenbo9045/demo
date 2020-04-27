@@ -1,5 +1,5 @@
 # demo
-//1,读取车辆运动路径
+//1,读取车辆运动轨迹
 typedef struct {
     float SCU_Locat_x;//车辆位置
     float SCU_Locat_y;//车辆位置
@@ -26,3 +26,25 @@ typedef struct {
     char *occurs_time;//当前时间
 	  unsigned short parking_save_state;//pkmap保存状态
 } DrivingDataType;
+2.对于每一个运动轨迹点for(auto p: driveDatas)
+2.1 读取入口GPS文件
+typedef struct
+{
+	double GPS_Longitude;
+	double GPS_Latitude;
+	double GPS_Accuracy;
+    int Gps_day_hour;
+} GPS_DataType;
+
+class GPS_save_class{
+public:
+	GPS_DataType GPS_origin;
+	GPS_DataType GPS_mark;
+	int write_flag;
+	int Gps_storage_count;
+	int Gps_count;
+	int time_day;
+	unsigned int entrance_count;
+	list<GPS_DataType> Gps_storage;
+} ;
+
