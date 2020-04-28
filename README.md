@@ -54,7 +54,16 @@ vector<Way_points_type> vWay_points;
 vector<Slots_type> vSlots;
 vector<Slots_type> vSlots_RT;
 vector<Landmarks_type> vLandmarks;
-2.3 利用GPS_origin初始化ENU坐标系，当车辆当前GPS信号与入口mark之间的距离（40-150m），且车辆具有一定的车速，以及GPS信号的准确率<2m时，计算车辆相对于origin在东北天坐标系下ENU的位置Gpsloclst，并存储对应的里程计位置Sculoclst
-2.4 当车辆当前GPS信号与入口mark之间的距离小于40m时，根据Gpsloclst和Sculoclst来计算SCU->ENU的坐标变换矩阵MtxT；
-2.5 根据上面计算的坐标变换矩阵得到SCU在ENU坐标系下的位置；
-2.6 实时建图和定位
+2.3 计算SCU->ENU的坐标变换矩阵MtxT
+2.3.1 利用GPS_origin初始化ENU坐标系，当车辆当前GPS信号与入口mark之间的距离（40-150m），且车辆具有一定的车速，以及GPS信号的准确率<2m时，计算车辆相对于origin在东北天坐标系下ENU的位置Gpsloclst，并存储对应的里程计位置Sculoclst（仅存储100个数据）
+2.3.2 当车辆当前GPS信号与入口mark之间的距离小于40m时，根据Gpsloclst和Sculoclst来计算SCU->ENU的坐标变换矩阵MtxT；
+2.3.3 根据上面计算的坐标变换矩阵得到SCU在ENU坐标系下的位置location；
+2.4 在新地图中添加路径点waypoints
+将经过SCU->ENU坐标变换的车辆轨迹driveData存储在buffer_maxSize（仅存储300个数据）和winRaw_maxSize列表中；并将轨迹点location保存到当前地图map_traj->vWay_poin
+2.5 
+2.5.1 当winRaw_maxSize中vWay_points的起始位置ds>3m时，计算winRaw_maxSize中的数据的平均速度Spd，转向角Eps，曲率Curvature，俯仰角pitch，GPS精度GpsAccu，偏航角yaw..。
+2。5.5 当winRaw_maxSize的起始路径点的索引
+
+2.6 在新地图中添加车位Slot
+在buffer_maxSize中查找距离当前轨迹点处所检测到的slot距离最小的waypoint_ind，并创建slot存储到当前地图map_traj->vSlots，如果已经添加到列表中，则无需再增加
+2.7 在新地图中添加车位SlotRT
