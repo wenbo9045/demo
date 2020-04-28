@@ -60,9 +60,9 @@ vector<Landmarks_type> vLandmarks;
 2.3.3 根据上面计算的坐标变换矩阵得到SCU在ENU坐标系下的位置location；
 2.4 在新地图中添加路径点waypoints
 将经过SCU->ENU坐标变换的车辆轨迹driveData存储在buffer_maxSize（仅存储300个数据）和winRaw_maxSize列表中；并将轨迹点location保存到当前地图map_traj->vWay_poin
-2.5 
+2.5 根据winRaw_maxSize判断路标特征的置信度
 2.5.1 当winRaw_maxSize中vWay_points的起始位置ds>3m时，计算winRaw_maxSize中的数据的平均速度Spd，转向角Eps，曲率Curvature，俯仰角pitch，GPS精度GpsAccu，偏航角yaw..。
-2。5.5 当winRaw_maxSize的起始路径点的索引
+2.5.5 在当前winRaw_maxSize中，根据对应的指标，判断路标类型(减速带，上下坡，)和对应的置信度，并在buffer_maxSize中确定路标的位置location和index
 
 2.6 在新地图中添加车位Slot
 在buffer_maxSize中查找距离当前轨迹点处所检测到的slot距离最小的waypoint_ind，并创建slot存储到当前地图map_traj->vSlots，如果已经添加到列表中，则无需再增加
