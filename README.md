@@ -26,8 +26,8 @@ typedef struct {
     char *occurs_time;//当前时间
 	  unsigned short parking_save_state;//pkmap保存状态
 } DrivingDataType;
-2.对于每一个运动轨迹点for(auto p: driveDatas)
-2.1 读取入口GPS文件，判断是否越过当前入口（仅初始化执行一次）
+2.对于每一个运动轨迹点【for(auto p: driveDatas)】
+2.1 读取入口GPS文件（仅初始化执行一次），根据存储的入口GPS数据，计算均值（storage和origin之间的距离必须小于指定阈值）已更新GPS的mark位置，并根据origin和mark判断当前位置是否远离当前入口。此外，根据车辆当前GPS信号与入口mark之间的距离，判断是否开始计算变换矩阵。
 Gps_origin_out = origin；Gps_mark_out = mean(Gps_entrance_mark)
 typedef struct
 {
