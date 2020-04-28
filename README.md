@@ -1,5 +1,5 @@
 # demo
-//1,读取车辆运动轨迹
+//1. 读取车辆运动轨迹
 typedef struct {
     float SCU_Locat_x;//车辆位置
     float SCU_Locat_y;//车辆位置
@@ -26,7 +26,7 @@ typedef struct {
     char *occurs_time;//当前时间
 	  unsigned short parking_save_state;//pkmap保存状态
 } DrivingDataType;
-2.对于每一个运动轨迹点【for(auto p: driveDatas)】
+2. 对于每一个运动轨迹点【for(auto p: driveDatas)】
 2.1 读取入口GPS文件（仅初始化执行一次），根据存储的入口GPS数据，计算均值（storage和origin之间的距离必须小于指定阈值）已更新GPS的mark位置，并根据origin和mark判断当前位置是否远离当前入口。此外，根据车辆当前GPS信号与入口mark之间的距离，判断是否开始计算变换矩阵。
 Gps_origin_out = origin；Gps_mark_out = mean(Gps_entrance_mark)
 typedef struct
@@ -48,11 +48,13 @@ public:
 	unsigned int entrance_count;
 	list<GPS_DataType> Gps_storage;
 } ;
-2.2读取地图数据（仅初始化执行一次）
+2.2 读取地图数据（仅初始化执行一次）
 vector<Joints_type> vJoints;
 vector<Way_points_type> vWay_points;
 vector<Slots_type> vSlots;
 vector<Slots_type> vSlots_RT;
 vector<Landmarks_type> vLandmarks;
-2.3根据drivedata和GPS_origin，GPS_entrance，根据地理坐标系下的GPS位置以及scu的位置将其转化为对应的东北天坐标系下ENU的位置
-仅当GPS_origin，GPS_entrance_mark之间的距离在small或者medium_range时，才开始计算变化矩阵
+2.3 利用GPS_origin初始化ENU坐标系，当车辆当前GPS信号与入口mark之间的距离（40-150m），且车辆具有一定的车速，以及GPS信号的准确率<2m时，计算车辆相对于origin在东北天坐标系下ENU的位置Gpsloclst，并存储对应的里程计位置Sculoclst
+2.4 当车辆当前GPS信号与入口mark之间的距离小于40m时，根据Gpsloclst和Sculoclst来计算SCU->ENU的坐标变换矩阵MtxT；
+2.5 根据上面计算的坐标变换矩阵得到SCU在ENU坐标系下的位置；
+2.6 实时建图和定位
